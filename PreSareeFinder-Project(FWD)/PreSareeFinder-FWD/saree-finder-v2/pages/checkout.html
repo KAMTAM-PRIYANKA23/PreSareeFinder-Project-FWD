@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    pages/checkout.html — Order Placed Confirmation
+    ==================================================
+    Shown after user clicks "Place Order" on cart.html.
+    The cart is already cleared by placeOrder() in user.js.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed — Hyderabad Saree Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="user-nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="user-dashboard.html">🪷 Saree Finder</a>
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link" href="user-dashboard.html">🏠 Home</a>
+        <a class="nav-link" href="sarees.html">✨ Sarees</a>
+        <a class="nav-link" href="wishlist.html">♡ Wishlist <span class="nav-badge" id="wishlistBadge">0</span></a>
+        <a class="nav-link" href="cart.html">🛍 Cart <span class="nav-badge" id="cartBadge">0</span></a>
+        <button class="nav-link logout-link" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+      <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Order success card -->
+  <main class="container">
+    <div class="checkout-success">
+      <div class="big-icon">✅</div>
+      <h2>Order Placed!</h2>
+      <p>
+        Thank you for your order. Please <strong>contact the store directly</strong>
+        to confirm availability and arrange pickup or delivery.
+        We'll do our best to fulfil your order soon!
+      </p>
+
+      <!-- Order reference number (simulated) -->
+      <p style="font-size:0.85rem;color:var(--maroon);font-weight:700;margin-bottom:24px">
+        Order Ref: #HSF-<span id="orderRef"></span>
+      </p>
+
+      <a href="sarees.html" class="btn-gold" style="display:inline-block;text-decoration:none">
+        Continue Shopping →
+      </a>
+    </div>
+  </main>
+
+  <footer><p>🪷 <strong>Hyderabad Saree Finder</strong></p></footer>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/user.js"></script>
+  <script>
+    requireUser();
+    updateBadgeCounts();
+
+    // Generate a fake order reference number
+    document.getElementById("orderRef").textContent =
+      Math.floor(100000 + Math.random() * 900000);
+  </script>
+</body>
+</html>

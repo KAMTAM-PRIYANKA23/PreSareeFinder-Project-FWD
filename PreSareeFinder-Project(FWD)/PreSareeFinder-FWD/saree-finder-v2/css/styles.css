@@ -1,0 +1,1304 @@
+/* ============================================================
+   css/styles.css — Global Stylesheet
+   Hyderabad Saree Finder
+   ============================================================
+   TABLE OF CONTENTS:
+   01. CSS Variables (Design Tokens)
+   02. Reset & Base
+   03. Scrollbar
+   04. Navigation Bar
+   05. Disclaimer Banner
+   06. Buttons
+   07. Form Inputs
+   08. Toast Notifications
+   09. Auth Pages (Login / Signup)
+   10. User Navigation (user pages)
+   11. Page Hero / Header
+   12. Filter Bar
+   13. Saree Grid & Cards
+   14. Saree Modal (Preview Popup)
+   15. Wishlist Page
+   16. Cart Page
+   17. Checkout Success Page
+   18. User Dashboard
+   19. Admin Dashboard Layout
+   20. Admin Sidebar
+   21. Admin Content Area
+   22. Admin Stats & Table
+   23. Admin Form
+   24. Empty State
+   25. Footer
+   26. Responsive (Mobile)
+   ============================================================ */
+
+
+/* ============================================================
+   01. CSS VARIABLES
+   Change these to restyle the whole website instantly.
+   ============================================================ */
+:root {
+  /* Brand Colors */
+  --maroon:        #7B1C2E;
+  --maroon-dark:   #5a1220;
+  --maroon-light:  #a6293f;
+  --gold:          #C9943A;
+  --gold-light:    #e8b85a;
+  --gold-pale:     #f5e6c8;
+  --cream:         #FAF6EF;
+  --cream-dark:    #f0e8d8;
+
+  /* Text */
+  --text:          #2c1a10;
+  --text-muted:    #7a5c4a;
+  --white:         #ffffff;
+
+  /* Shadows */
+  --shadow:        0 4px 24px rgba(123, 28, 46, 0.09);
+  --shadow-lg:     0 8px 40px rgba(123, 28, 46, 0.17);
+
+  /* Sizes */
+  --radius:        14px;
+  --radius-sm:     8px;
+  --nav-height:    64px;
+
+  /* Animation */
+  --speed:         0.26s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* ============================================================
+   02. RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Mulish', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Headings use an elegant serif */
+h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+img { display: block; max-width: 100%; }
+
+a { color: var(--maroon); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+
+/* ============================================================
+   03. SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: var(--cream-dark); }
+::-webkit-scrollbar-thumb  { background: var(--maroon); border-radius: 10px; }
+
+
+/* ============================================================
+   04. AUTH NAVIGATION (login.html, signup.html)
+   ============================================================ */
+.auth-topbar {
+  background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.auth-topbar .logo {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold-light);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   05. USER NAVIGATION (user pages)
+   ============================================================ */
+.user-nav {
+  background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon) 65%, #9b2335 100%);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.22);
+}
+
+.user-nav .nav-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+/* Logo */
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold-light);
+  font-size: 1.35rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+/* Navigation links group */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Each nav link/button */
+.nav-link {
+  background: none;
+  border: none;
+  color: rgba(250, 240, 220, 0.85);
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 28px;
+  cursor: pointer;
+  transition: var(--speed);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link:hover         { background: rgba(255,255,255,0.14); color: #fff; text-decoration: none; }
+.nav-link.active        { background: var(--gold); color: var(--maroon-dark); }
+.nav-link.logout-link   { color: rgba(255,200,200,0.85); }
+.nav-link.logout-link:hover { background: rgba(255,80,80,0.15); color: #ffaaaa; }
+
+/* Badge for cart/wishlist counts */
+.nav-badge {
+  background: var(--gold-light);
+  color: var(--maroon-dark);
+  font-size: 0.68rem;
+  font-weight: 800;
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* User name in top right */
+#navUserName {
+  color: var(--gold-pale);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0 8px;
+}
+
+/* Hamburger (mobile) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--gold-light);
+  border-radius: 2px;
+  transition: var(--speed);
+}
+
+
+/* ============================================================
+   06. DISCLAIMER BANNER
+   ============================================================ */
+.disclaimer {
+  background: linear-gradient(90deg, var(--gold-pale), var(--cream-dark));
+  border-bottom: 1.5px solid var(--gold);
+  padding: 8px 20px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--maroon-dark);
+  font-weight: 500;
+}
+.disclaimer strong { color: var(--maroon); }
+
+
+/* ============================================================
+   07. BUTTONS
+   ============================================================ */
+.btn-primary {
+  background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
+  color: var(--white);
+  border: none;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.93rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--speed);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(123,28,46,0.3); text-decoration: none; }
+.btn-primary.in-cart { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--maroon-dark); }
+
+.btn-outline {
+  background: none;
+  border: 1.5px solid var(--maroon);
+  color: var(--maroon);
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--speed);
+}
+.btn-outline:hover { background: var(--maroon); color: var(--white); }
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--maroon-dark);
+  border: none;
+  padding: 13px 28px;
+  border-radius: 40px;
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--speed);
+  box-shadow: 0 4px 14px rgba(201,148,58,0.3);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,148,58,0.45); }
+
+.btn-cancel {
+  background: none;
+  border: 2px solid var(--cream-dark);
+  color: var(--text-muted);
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.93rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--speed);
+}
+.btn-cancel:hover { border-color: var(--maroon); color: var(--maroon); }
+
+/* Full-width button variant */
+.btn-block { width: 100%; justify-content: center; }
+
+
+/* ============================================================
+   08. FORM INPUTS
+   ============================================================ */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: var(--maroon);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--cream-dark);
+  border-radius: var(--radius-sm);
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.93rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: var(--speed);
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--maroon);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(123,28,46,0.08);
+}
+
+.form-hint {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+.form-error {
+  color: #c0392b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #fdf0ef;
+  border-radius: 6px;
+  border-left: 3px solid #c0392b;
+}
+
+
+/* ============================================================
+   09. TOAST NOTIFICATIONS
+   ============================================================ */
+.toast-container {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 0.87rem;
+  font-weight: 600;
+  box-shadow: 0 5px 22px rgba(0,0,0,0.22);
+  animation: toastSlide 0.3s ease;
+  max-width: 300px;
+}
+
+.toast-success {
+  background: var(--maroon-dark);
+  color: white;
+  border-left: 4px solid var(--gold);
+}
+
+.toast-error {
+  background: #5c1a1a;
+  color: white;
+  border-left: 4px solid #ff6b6b;
+}
+
+@keyframes toastSlide {
+  from { transform: translateX(50px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+
+/* ============================================================
+   10. AUTH PAGES (login.html, signup.html)
+   ============================================================ */
+.auth-body {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 30% 40%, rgba(123,28,46,0.07) 0%, transparent 70%),
+              var(--cream);
+  padding: 40px 20px;
+}
+
+.auth-card {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+}
+
+.auth-card-header {
+  background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
+  padding: 36px 32px 28px;
+  text-align: center;
+}
+
+.auth-card-header h1 {
+  color: var(--gold-light);
+  font-size: 1.85rem;
+  margin-bottom: 6px;
+}
+
+.auth-card-header p {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+}
+
+.auth-card-body {
+  padding: 32px;
+}
+
+/* Role toggle (User / Admin) */
+.role-toggle {
+  display: flex;
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 22px;
+  border: 1.5px solid var(--cream-dark);
+}
+
+.role-btn {
+  flex: 1;
+  padding: 9px;
+  text-align: center;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.87rem;
+  font-weight: 700;
+  font-family: 'Mulish', sans-serif;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  transition: var(--speed);
+}
+
+.role-btn.active {
+  background: var(--maroon);
+  color: white;
+}
+
+/* Auth page switch link */
+.auth-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.87rem;
+  color: var(--text-muted);
+}
+
+.auth-footer a {
+  color: var(--maroon);
+  font-weight: 700;
+}
+
+/* Demo credentials helper box */
+.demo-box {
+  margin-top: 18px;
+  padding: 12px 16px;
+  background: var(--gold-pale);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-left: 3px solid var(--gold);
+}
+.demo-box strong { color: var(--maroon); }
+
+
+/* ============================================================
+   11. PAGE HERO / HEADER
+   ============================================================ */
+.page-hero {
+  background: linear-gradient(135deg, var(--maroon-dark) 0%, #8B1A28 50%, var(--maroon) 100%);
+  padding: 60px 24px 52px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative dot pattern */
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(201,148,58,0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.page-hero-content { position: relative; max-width: 660px; margin: 0 auto; }
+
+.page-hero h1 {
+  color: var(--gold-light);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.page-hero h1 em { color: white; font-style: italic; }
+
+.page-hero p {
+  color: rgba(255,255,255,0.78);
+  font-size: 1.02rem;
+  margin-bottom: 24px;
+}
+
+/* Search bar in hero */
+.hero-search {
+  display: flex;
+  gap: 10px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.hero-search input {
+  flex: 1;
+  padding: 13px 18px;
+  border-radius: 40px;
+  border: 2px solid var(--gold);
+  background: rgba(255,255,255,0.94);
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.94rem;
+  color: var(--text);
+  outline: none;
+}
+
+.hero-search input:focus { border-color: var(--gold-light); }
+
+
+/* ============================================================
+   12. FILTER BAR
+   ============================================================ */
+.filter-bar {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 28px;
+  border: 1px solid var(--cream-dark);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.filter-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--maroon);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Filter chip pills */
+.chip {
+  background: var(--cream);
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 28px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--speed);
+  font-family: 'Mulish', sans-serif;
+}
+
+.chip:hover  { border-color: var(--maroon); color: var(--maroon); }
+.chip.active { background: var(--maroon); color: white; border-color: var(--maroon); }
+
+/* Thin vertical divider between filter groups */
+.filter-sep {
+  width: 1px;
+  height: 28px;
+  background: var(--cream-dark);
+  margin: 0 4px;
+}
+
+
+/* ============================================================
+   13. SAREE GRID & CARDS
+   ============================================================ */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.section-header h2 { font-size: 1.6rem; color: var(--maroon); }
+.section-header span { color: var(--text-muted); font-size: 0.88rem; }
+
+.saree-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 22px;
+}
+
+/* Individual card */
+.saree-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--cream-dark);
+  overflow: hidden;
+  transition: var(--speed);
+  position: relative;
+}
+
+.saree-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Image wrapper */
+.card-img-wrap {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: var(--cream-dark);
+}
+
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.saree-card:hover .card-img-wrap img { transform: scale(1.06); }
+
+/* Category label (top-left of image) */
+.cat-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--maroon);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Discount badge (top-right area) */
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 52px;
+  background: var(--gold);
+  color: var(--maroon-dark);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+/* Wishlist heart button */
+.wish-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,255,255,0.92);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--speed);
+  box-shadow: 0 2px 7px rgba(0,0,0,0.14);
+}
+
+.wish-btn:hover { transform: scale(1.12); background: white; }
+.wish-btn.wished { color: var(--maroon); }
+
+/* Out of stock overlay */
+.out-of-stock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+/* Card text area */
+.card-body    { padding: 14px 16px 16px; }
+.card-name    { font-family: 'Playfair Display', serif; font-size: 1.02rem; color: var(--text); margin-bottom: 5px; font-weight: 600; }
+.card-store   { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 9px; }
+.card-price   { margin-bottom: 13px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.card-actions { display: flex; gap: 8px; }
+
+/* Price styling */
+.price-now  { font-size: 1.2rem; font-weight: 800; color: var(--maroon); }
+.price-was  { font-size: 0.85rem; color: var(--text-muted); text-decoration: line-through; }
+
+/* Discount pill in table */
+.discount-pill {
+  background: var(--gold-pale);
+  color: var(--maroon);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* Btn-cart within card */
+.btn-cart {
+  flex: 1;
+  background: var(--maroon);
+  border: 1.5px solid var(--maroon);
+  color: white;
+  border-radius: 8px;
+  padding: 9px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: var(--speed);
+  font-family: 'Mulish', sans-serif;
+}
+.btn-cart:hover   { background: var(--maroon-dark); }
+.btn-cart.in-cart { background: var(--gold); border-color: var(--gold); color: var(--maroon-dark); }
+.btn-cart:disabled { opacity: 0.4; cursor: not-allowed; }
+
+
+/* ============================================================
+   14. SAREE MODAL (Preview Popup)
+   ============================================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(44,26,16,0.62);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+  background: white;
+  border-radius: 20px;
+  max-width: 700px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+  animation: slideUp 0.28s ease;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(28px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-img  { width: 100%; height: 300px; object-fit: cover; display: block; }
+.modal-body { padding: 26px; }
+.modal-title { font-size: 1.5rem; color: var(--maroon); margin-bottom: 6px; }
+.modal-price { font-size: 1.8rem; font-weight: 800; color: var(--maroon); margin: 12px 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.modal-meta  { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.modal-meta-item { background: var(--cream); border-radius: 8px; padding: 8px 14px; font-size: 0.83rem; }
+.modal-meta-item strong { color: var(--maroon); display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+.modal-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+.in-stock  { color: #1a7a3c; font-weight: 700; }
+.out-of-stock { color: #c0392b; font-weight: 700; }
+
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--speed);
+}
+.modal-close-btn:hover { background: var(--maroon); color: white; }
+
+
+/* ============================================================
+   15. WISHLIST PAGE
+   ============================================================ */
+.page-title-bar {
+  background: var(--white);
+  border-bottom: 2px solid var(--cream-dark);
+  padding: 22px 0;
+}
+
+.page-title-bar .inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.page-title-bar h1 { color: var(--maroon); font-size: 1.6rem; }
+.page-title-bar span { color: var(--text-muted); font-size: 0.88rem; }
+
+
+/* ============================================================
+   16. CART PAGE
+   ============================================================ */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Cart item row */
+.cart-row {
+  background: var(--white);
+  border-radius: var(--radius);
+  border: 1px solid var(--cream-dark);
+  box-shadow: var(--shadow);
+  padding: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cart-row img { width: 76px; height: 86px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.cart-row-info { flex: 1; }
+.cart-row-name { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 4px; }
+.cart-row-meta { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 7px; }
+.cart-row-price { font-weight: 800; color: var(--maroon); font-size: 1.02rem; }
+
+.cart-remove-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  transition: var(--speed);
+}
+.cart-remove-btn:hover { color: var(--maroon); }
+
+/* Order summary panel */
+.order-summary-box {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--cream-dark);
+  padding: 22px;
+  position: sticky;
+  top: 80px;
+}
+
+.order-summary-box h3 {
+  font-size: 1.1rem;
+  color: var(--maroon);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--cream-dark);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--maroon);
+  border-top: 2px solid var(--cream-dark);
+  padding-top: 12px;
+  margin-top: 8px;
+}
+
+.store-info-box {
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin: 14px 0;
+}
+.store-info-box strong { color: var(--maroon); display: block; margin-bottom: 5px; font-size: 0.78rem; text-transform: uppercase; }
+
+
+/* ============================================================
+   17. CHECKOUT SUCCESS
+   ============================================================ */
+.checkout-success {
+  max-width: 500px;
+  margin: 70px auto;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  padding: 52px 40px;
+  text-align: center;
+}
+
+.checkout-success .big-icon { font-size: 4.5rem; margin-bottom: 16px; }
+.checkout-success h2 { color: var(--maroon); font-size: 1.7rem; margin-bottom: 10px; }
+.checkout-success p  { color: var(--text-muted); line-height: 1.65; margin-bottom: 26px; }
+
+
+/* ============================================================
+   18. USER DASHBOARD
+   ============================================================ */
+.dashboard-welcome {
+  background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
+  padding: 36px 0;
+}
+
+.dashboard-welcome .inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.dashboard-welcome h2 { color: var(--gold-light); font-size: 1.7rem; margin-bottom: 4px; }
+.dashboard-welcome p  { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+
+/* Quick action cards */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.quick-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--speed);
+  text-decoration: none;
+  display: block;
+  border: 1px solid var(--cream-dark);
+}
+
+.quick-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); text-decoration: none; }
+.quick-card .qc-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.quick-card .qc-label { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--maroon); margin-bottom: 4px; }
+.quick-card .qc-sub   { font-size: 0.8rem; color: var(--text-muted); }
+
+
+/* ============================================================
+   19. ADMIN DASHBOARD LAYOUT
+   ============================================================ */
+.admin-page {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+
+/* ============================================================
+   20. ADMIN SIDEBAR
+   ============================================================ */
+.admin-sidebar {
+  background: linear-gradient(180deg, var(--maroon-dark) 0%, var(--maroon) 100%);
+  padding: 28px 0;
+  position: sticky;
+  top: 64px;         /* stick below the navbar */
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.sidebar-store-name {
+  color: var(--gold-light);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 12px;
+}
+
+.sidebar-section-label {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 20px;
+  margin-bottom: 6px;
+  margin-top: 14px;
+}
+
+/* Sidebar nav items */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  color: rgba(255,255,255,0.72);
+  cursor: pointer;
+  transition: var(--speed);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Mulish', sans-serif;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar-item:hover   { background: rgba(255,255,255,0.1); color: white; }
+.sidebar-item.active  { background: var(--gold); color: var(--maroon-dark); }
+.sidebar-item.danger  { color: rgba(255,180,180,0.85); margin-top: 8px; }
+.sidebar-item.danger:hover { background: rgba(255,80,80,0.12); color: #ffaaaa; }
+
+
+/* ============================================================
+   21. ADMIN CONTENT AREA
+   ============================================================ */
+.admin-main {
+  background: #f5ede0;
+  padding: 28px;
+  overflow-y: auto;
+}
+
+.admin-section-header {
+  margin-bottom: 22px;
+}
+
+.admin-section-header h2 { color: var(--maroon); font-size: 1.5rem; margin-bottom: 4px; }
+.admin-section-header p  { color: var(--text-muted); font-size: 0.88rem; }
+
+
+/* ============================================================
+   22. ADMIN STATS & TABLE
+   ============================================================ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-box {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  text-align: center;
+  border-top: 3px solid var(--gold);
+}
+
+.stat-num   { display: block; font-size: 1.8rem; font-weight: 800; color: var(--maroon); font-family: 'Playfair Display', serif; }
+.stat-label { display: block; font-size: 0.78rem; color: var(--text-muted); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.admin-table th {
+  background: var(--cream);
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--cream-dark);
+  font-size: 0.86rem;
+  vertical-align: middle;
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: var(--cream); }
+.table-thumb { width: 50px; height: 56px; object-fit: cover; border-radius: 6px; }
+.empty-row { text-align: center; padding: 32px; color: var(--text-muted); }
+
+/* Status pills */
+.status-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; }
+.status-avail   { background: #d4edda; color: #155724; }
+.status-unavail { background: #f8d7da; color: #721c24; }
+
+/* Action buttons in table */
+.action-cell   { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.tbl-btn       { border: 1px solid; border-radius: 6px; padding: 5px 10px; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: var(--speed); font-family: 'Mulish', sans-serif; background: none; white-space: nowrap; }
+.edit-btn      { border-color: var(--gold);   color: var(--gold); }
+.edit-btn:hover { background: var(--gold); color: white; }
+.toggle-btn    { border-color: #6c757d; color: #6c757d; }
+.toggle-btn:hover { background: #6c757d; color: white; }
+.delete-btn    { border-color: var(--maroon); color: var(--maroon); }
+.delete-btn:hover { background: var(--maroon); color: white; }
+
+/* Quick-update buttons (📷 Image, 💰 Price) in admin table */
+.img-btn       { border-color: #5b6abf; color: #5b6abf; }
+.img-btn:hover { background: #5b6abf; color: white; }
+.price-btn     { border-color: #2e7d52; color: #2e7d52; }
+.price-btn:hover { background: #2e7d52; color: white; }
+
+/*
+ * Inline popup rows in admin inventory table.
+ * These hidden <tr> rows expand below a saree row when
+ * the admin clicks 📷 or 💰, giving a fast in-place editor.
+ */
+.inline-popup-row { background: var(--gold-pale); }
+.inline-popup-row td { border-top: 2px dashed var(--gold); }
+
+
+/* ============================================================
+   23. ADMIN FORM
+   ============================================================ */
+.admin-form {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.store-info-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+
+/* ============================================================
+   24. EMPTY STATE
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 70px 24px;
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+}
+
+.empty-icon { font-size: 3.5rem; display: block; margin-bottom: 14px; }
+.empty-state p    { font-size: 1.05rem; margin-bottom: 6px; }
+.empty-state small { font-size: 0.84rem; }
+
+
+/* ============================================================
+   25. FOOTER
+   ============================================================ */
+footer {
+  background: var(--maroon-dark);
+  color: rgba(255,255,255,0.65);
+  text-align: center;
+  padding: 26px 20px;
+  margin-top: 60px;
+  font-size: 0.82rem;
+  line-height: 1.9;
+}
+
+footer strong { color: var(--gold-light); }
+footer a      { color: var(--gold-light); }
+
+
+/* ============================================================
+   26. RESPONSIVE (Mobile & Tablet)
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .cart-layout   { grid-template-columns: 1fr; }
+  .admin-page    { grid-template-columns: 1fr; }
+
+  .admin-sidebar {
+    position: static;
+    height: auto;
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    gap: 4px;
+  }
+
+  .sidebar-store-name, .sidebar-section-label { display: none; }
+  .sidebar-item { white-space: nowrap; border-radius: 28px; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--maroon-dark);
+    flex-direction: column;
+    padding: 12px;
+    gap: 4px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+
+  .nav-links.open { display: flex; }
+  .hamburger      { display: flex; }
+
+  .page-hero   { padding: 44px 18px 38px; }
+  .hero-search { flex-direction: column; }
+  .filter-bar  { padding: 12px; }
+
+  .form-row    { grid-template-columns: 1fr; }
+  .stats-row   { grid-template-columns: 1fr 1fr; }
+
+  .auth-card-body  { padding: 22px; }
+  .auth-card-header{ padding: 28px 22px 20px; }
+}

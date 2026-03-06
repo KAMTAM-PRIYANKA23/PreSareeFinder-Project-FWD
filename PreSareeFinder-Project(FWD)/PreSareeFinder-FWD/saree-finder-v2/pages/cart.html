@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    pages/cart.html — Shopping Cart & Checkout
+    =============================================
+    Shows cart items, order summary, and store locations.
+    "Place Order" button simulates checkout and goes to checkout.html.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Hyderabad Saree Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="user-nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="user-dashboard.html">🪷 Saree Finder</a>
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link" href="user-dashboard.html">🏠 Home</a>
+        <a class="nav-link" href="sarees.html">✨ Sarees</a>
+        <a class="nav-link" href="wishlist.html">♡ Wishlist <span class="nav-badge" id="wishlistBadge">0</span></a>
+        <a class="nav-link active" href="cart.html">🛍 Cart <span class="nav-badge" id="cartBadge">0</span></a>
+        <span id="navUserName" class="nav-link" style="cursor:default"></span>
+        <button class="nav-link logout-link" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+      <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page title -->
+  <div class="page-title-bar">
+    <div class="inner">
+      <h1>My Cart 🛍</h1>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="cart-layout">
+
+      <!-- LEFT: Cart items list -->
+      <div>
+        <div id="cartItems"></div>
+      </div>
+
+      <!-- RIGHT: Order summary sidebar -->
+      <div id="orderSummary" style="display:none">
+        <div class="order-summary-box">
+          <h3>Order Summary</h3>
+
+          <!-- Individual item lines -->
+          <div id="summaryItems"></div>
+
+          <!-- Totals -->
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="summarySubtotal"></span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span id="summaryShipping"></span>
+          </div>
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="summaryTotal"></span>
+          </div>
+
+          <!-- Store pickup info -->
+          <div class="store-info-box">
+            <strong>Store Locations</strong>
+            <span id="summaryStores"></span>
+          </div>
+
+          <!-- Place order -->
+          <button class="btn-primary btn-block" onclick="placeOrder()">
+            Place Order ✓
+          </button>
+
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-top:10px;text-align:center">
+            By placing an order you agree to contact the store directly to confirm stock.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer><p>🪷 <strong>Hyderabad Saree Finder</strong></p></footer>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/user.js"></script>
+  <script>
+    requireUser();
+    populateNavUser();
+    updateBadgeCounts();
+    renderCartPage();
+  </script>
+</body>
+</html>

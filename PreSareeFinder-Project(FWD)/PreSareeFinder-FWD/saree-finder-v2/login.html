@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    login.html — Entry Point (Default Starting Page)
+    ================================================
+    This is the FIRST page users see when they open the website.
+    It allows both customers and admins to log in.
+    After login, they are redirected to the correct dashboard.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Hyderabad Saree Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       TOP BAR with logo
+       ============================================================ -->
+  <header class="auth-topbar">
+    <div class="logo">🪷 Hyderabad Saree Finder</div>
+  </header>
+
+
+  <!-- ============================================================
+       LOGIN FORM CARD
+       ============================================================ -->
+  <main class="auth-body">
+    <div class="auth-card">
+
+      <!-- Card header -->
+      <div class="auth-card-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to browse and shop beautiful sarees</p>
+      </div>
+
+      <!-- Card body: the form -->
+      <div class="auth-card-body">
+
+        <!-- Role selector: toggle between User and Admin login -->
+        <div class="role-toggle">
+          <button class="role-btn active" id="roleUserBtn"
+            onclick="selectRole('user')">👤 Customer</button>
+          <button class="role-btn" id="roleAdminBtn"
+            onclick="selectRole('admin')">⚙ Admin</button>
+        </div>
+
+        <!-- Hidden input stores the selected role -->
+        <input type="hidden" id="loginRole" value="user">
+
+        <!-- Email field -->
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email">
+        </div>
+
+        <!-- Password field -->
+        <div class="form-group">
+          <label for="loginPass">Password</label>
+          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter') handleLogin()">
+        </div>
+
+        <!-- Error message (hidden until there's an error) -->
+        <p class="form-error" id="loginError" style="display:none"></p>
+
+        <!-- Submit button -->
+        <button class="btn-primary btn-block" onclick="handleLogin()">
+          Sign In →
+        </button>
+
+        <!-- Demo credentials helper -->
+        <div class="demo-box" id="demoBox">
+          <strong>Demo Customer:</strong> user@demo.com / demo123<br>
+          <strong>Demo Admin:</strong> admin@kalaniketan.com / admin123
+        </div>
+
+        <!-- Link to signup -->
+        <div class="auth-footer">
+          Don't have an account? <a href="signup.html">Create one free →</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+
+  <!-- Toast container for notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+       Load data.js first (has USERS, ADMINS arrays),
+       then auth.js (has handleLogin, etc.)
+       ============================================================ -->
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    // If already logged in, go to dashboard right away
+    redirectIfLoggedIn();
+
+    /**
+     * Switch the visible role between "user" and "admin".
+     * Updates the hidden input and the toggle button styles.
+     * @param {string} role - "user" or "admin"
+     */
+    function selectRole(role) {
+      document.getElementById("loginRole").value = role;
+
+      // Update toggle button styles
+      document.getElementById("roleUserBtn").className  = "role-btn" + (role === "user"  ? " active" : "");
+      document.getElementById("roleAdminBtn").className = "role-btn" + (role === "admin" ? " active" : "");
+
+      // Clear any existing error
+      clearFormError("loginError");
+
+      // Update demo box content based on role
+      var demoBox = document.getElementById("demoBox");
+      if (role === "admin") {
+        demoBox.innerHTML =
+          '<strong>All admin passwords: admin123</strong><br>' +
+          '📌 admin@kalaniketan.com → Kalaniketan<br>' +
+          '📌 admin@chennaimall.com → Chennai Shopping Mall<br>' +
+          '📌 admin@southindia.com  → South India Shopping Mall<br>' +
+          '📌 admin@sheneeds.com    → She Needs<br>' +
+          '📌 admin@manyavar.com    → Manyavar<br>' +
+          '📌 admin@mangalya.com    → Mangalya';
+      } else {
+        demoBox.innerHTML = '<strong>Demo Customer:</strong> user@demo.com / demo123<br>'
+          + '<strong>Another account:</strong> anita@demo.com / demo123';
+      }
+    }
+  </script>
+
+</body>
+</html>

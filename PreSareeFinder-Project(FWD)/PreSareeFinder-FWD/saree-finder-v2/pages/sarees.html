@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    pages/sarees.html — Browse All Sarees
+    =======================================
+    Full saree catalogue with:
+      - Search bar
+      - Price filters
+      - Category filters
+      - Saree grid with preview modal
+    
+    Supports URL params:
+      ?cat=Wedding   → pre-filters by category
+      ?price=0-2000  → pre-filters by price
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Sarees — Hyderabad Saree Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="user-nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="user-dashboard.html">🪷 Saree Finder</a>
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link" href="user-dashboard.html">🏠 Home</a>
+        <a class="nav-link active" href="sarees.html">✨ Sarees</a>
+        <a class="nav-link" href="wishlist.html">♡ Wishlist <span class="nav-badge" id="wishlistBadge">0</span></a>
+        <a class="nav-link" href="cart.html">🛍 Cart <span class="nav-badge" id="cartBadge">0</span></a>
+        <span id="navUserName" class="nav-link" style="cursor:default"></span>
+        <button class="nav-link logout-link" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+      <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="disclaimer">
+    ⚠️ <strong>Disclaimer:</strong> Stock shown online may not match store inventory. Contact the store to confirm before visiting.
+  </div>
+
+  <!-- HERO with search -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <h1>Explore <em>Hyderabad's</em> Finest Sarees</h1>
+      <p>Handpicked from the most trusted stores across the city</p>
+      <div class="hero-search">
+        <input type="text" id="searchInput" placeholder="Search by name, store, or style…"
+          oninput="applyFilters()" aria-label="Search sarees">
+        <button class="btn-gold" onclick="applyFilters()">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+
+      <!-- Price filters -->
+      <div class="filter-group">
+        <span class="filter-label">Price</span>
+        <button class="chip" id="chip-price-all"    onclick="setPrice('all',    this)">All</button>
+        <button class="chip" id="chip-price-0-2000" onclick="setPrice('0-2000', this)">Under ₹2,000</button>
+        <button class="chip" id="chip-price-2000-5000" onclick="setPrice('2000-5000', this)">₹2K–₹5K</button>
+        <button class="chip" id="chip-price-5000-10000" onclick="setPrice('5000-10000', this)">₹5K–₹10K</button>
+        <button class="chip" id="chip-price-10000-99999" onclick="setPrice('10000-99999', this)">₹10K+</button>
+      </div>
+
+      <div class="filter-sep"></div>
+
+      <!-- Category filters -->
+      <div class="filter-group">
+        <span class="filter-label">Category</span>
+        <button class="chip" id="chip-cat-All"         onclick="setCat('All',         this)">All</button>
+        <button class="chip" id="chip-cat-Fancy"       onclick="setCat('Fancy',       this)">Fancy</button>
+        <button class="chip" id="chip-cat-Wedding"     onclick="setCat('Wedding',     this)">Wedding</button>
+        <button class="chip" id="chip-cat-Traditional" onclick="setCat('Traditional', this)">Traditional</button>
+        <button class="chip" id="chip-cat-Daily-Wear"  onclick="setCat('Daily Wear',  this)">Daily Wear</button>
+        <button class="chip" id="chip-cat-Comfortable" onclick="setCat('Comfortable', this)">Comfortable</button>
+      </div>
+
+    </div>
+
+    <!-- Section header with result count -->
+    <div class="section-header">
+      <h2>All Sarees</h2>
+      <span id="sareeCount"></span>
+    </div>
+
+    <!-- Saree grid (filled by JS) -->
+    <div class="saree-grid" id="sareeGrid"></div>
+
+  </main>
+
+
+  <!-- SAREE PREVIEW MODAL -->
+  <div id="sareeModal" class="modal-backdrop" style="display:none" onclick="closeSareeModal(event)">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="document.getElementById('sareeModal').style.display='none'; document.body.style.overflow=''">✕</button>
+      <img id="modalImg" class="modal-img" src="" alt="">
+      <div class="modal-body">
+        <span id="modalCategory" class="cat-badge" style="position:static;display:inline-block;margin-bottom:10px"></span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta">
+          <div class="modal-meta-item"><strong>Store</strong><span id="modalStore"></span></div>
+          <div class="modal-meta-item"><strong>Location</strong><span id="modalLocation"></span></div>
+          <div class="modal-meta-item"><strong>Availability</strong><span id="modalStatus"></span></div>
+        </div>
+        <p id="modalDesc" style="color:var(--text-muted);font-size:0.9rem;line-height:1.6;margin-bottom:12px"></p>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-actions">
+          <button class="btn-outline" id="modalWishBtn"></button>
+          <button class="btn-primary" id="modalCartBtn"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer>
+    <p>🪷 <strong>Hyderabad Saree Finder</strong> — Celebrating Indian weaves</p>
+  </footer>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/user.js"></script>
+  <script>
+    // ✅ PROTECT THIS PAGE
+    requireUser();
+    populateNavUser();
+    updateBadgeCounts();
+
+    /*
+     * Active filter state for this page.
+     * We store it in an object so user.js renderSareeGrid()
+     * can re-use it after toggling wishlist/cart.
+     */
+    var currentFilters = { search: "", cat: "All", price: "all" };
+
+    /* --- Read URL params to pre-select filters --- */
+    var urlCat   = getParam("cat");
+    var urlPrice = getParam("price");
+
+    if (urlCat) {
+      currentFilters.cat = urlCat;
+      // Activate the matching chip
+      var catChipId = "chip-cat-" + urlCat.replace(" ", "-");
+      var catChip   = document.getElementById(catChipId);
+      if (catChip) {
+        document.querySelectorAll(".filter-group .chip").forEach(function(c){ c.classList.remove("active"); });
+        catChip.classList.add("active");
+      }
+    } else {
+      // Default: activate "All" cat chip
+      document.getElementById("chip-cat-All").classList.add("active");
+    }
+
+    if (urlPrice) {
+      currentFilters.price = urlPrice;
+      var priceChip = document.getElementById("chip-price-" + urlPrice);
+      if (priceChip) {
+        document.getElementById("chip-price-all").classList.remove("active");
+        priceChip.classList.add("active");
+      }
+    } else {
+      document.getElementById("chip-price-all").classList.add("active");
+    }
+
+    /* --- Initial render --- */
+    applyFilters();
+
+    /* --- Filter functions called by chips and search --- */
+    function setPrice(val, el) {
+      currentFilters.price = val;
+      document.querySelectorAll('[id^="chip-price-"]').forEach(function(c){ c.classList.remove("active"); });
+      el.classList.add("active");
+      applyFilters();
+    }
+
+    function setCat(val, el) {
+      currentFilters.cat = val;
+      document.querySelectorAll('[id^="chip-cat-"]').forEach(function(c){ c.classList.remove("active"); });
+      el.classList.add("active");
+      applyFilters();
+    }
+
+    function applyFilters() {
+      currentFilters.search = document.getElementById("searchInput").value;
+      renderSareeGrid("sareeGrid", "sareeCount",
+        currentFilters.search, currentFilters.cat, currentFilters.price);
+    }
+  </script>
+
+</body>
+</html>

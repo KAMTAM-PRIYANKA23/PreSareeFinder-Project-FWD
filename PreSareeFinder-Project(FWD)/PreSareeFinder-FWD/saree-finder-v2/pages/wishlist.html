@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    pages/wishlist.html — Saved Sarees
+    =====================================
+    Shows all sarees the user has added to their wishlist.
+    Wishlist items are stored in sessionStorage.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist — Hyderabad Saree Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="user-nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="user-dashboard.html">🪷 Saree Finder</a>
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link" href="user-dashboard.html">🏠 Home</a>
+        <a class="nav-link" href="sarees.html">✨ Sarees</a>
+        <a class="nav-link active" href="wishlist.html">♡ Wishlist <span class="nav-badge" id="wishlistBadge">0</span></a>
+        <a class="nav-link" href="cart.html">🛍 Cart <span class="nav-badge" id="cartBadge">0</span></a>
+        <span id="navUserName" class="nav-link" style="cursor:default"></span>
+        <button class="nav-link logout-link" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+      <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page title bar -->
+  <div class="page-title-bar">
+    <div class="inner">
+      <h1>My Wishlist ♡</h1>
+      <span id="wishlistCount"></span>
+    </div>
+  </div>
+
+  <!-- Wishlist grid -->
+  <main class="container">
+    <div class="saree-grid" id="wishlistGrid"></div>
+  </main>
+
+
+  <!-- SAREE PREVIEW MODAL -->
+  <div id="sareeModal" class="modal-backdrop" style="display:none" onclick="closeSareeModal(event)">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="document.getElementById('sareeModal').style.display='none'; document.body.style.overflow=''">✕</button>
+      <img id="modalImg" class="modal-img" src="" alt="">
+      <div class="modal-body">
+        <span id="modalCategory" class="cat-badge" style="position:static;display:inline-block;margin-bottom:10px"></span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta">
+          <div class="modal-meta-item"><strong>Store</strong><span id="modalStore"></span></div>
+          <div class="modal-meta-item"><strong>Location</strong><span id="modalLocation"></span></div>
+          <div class="modal-meta-item"><strong>Availability</strong><span id="modalStatus"></span></div>
+        </div>
+        <p id="modalDesc" style="color:var(--text-muted);font-size:0.9rem;line-height:1.6;margin-bottom:12px"></p>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-actions">
+          <button class="btn-outline" id="modalWishBtn"></button>
+          <button class="btn-primary" id="modalCartBtn"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>🪷 <strong>Hyderabad Saree Finder</strong></p></footer>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/user.js"></script>
+  <script>
+    requireUser();
+    populateNavUser();
+    updateBadgeCounts();
+    renderWishlistPage();
+  </script>
+</body>
+</html>

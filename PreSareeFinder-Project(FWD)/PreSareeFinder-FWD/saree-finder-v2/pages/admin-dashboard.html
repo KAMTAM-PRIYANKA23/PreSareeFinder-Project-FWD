@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    pages/admin-dashboard.html — Admin Store Management Panel
+    ===========================================================
+    PROTECTED: Only accessible to logged-in admins.
+    If a regular user tries to open this URL directly,
+    requireAdmin() in auth.js redirects them to login.html.
+
+    Each admin sees ONLY their own store's sarees.
+    They can: Add / Edit / Delete / Toggle availability.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Hyderabad Saree Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       ADMIN TOP NAVIGATION BAR
+       (Separate from user nav — no cart/wishlist links)
+       ============================================================ -->
+  <nav class="user-nav">
+    <div class="nav-inner">
+      <!-- Logo -->
+      <div class="nav-logo" style="cursor:default">⚙ Admin Panel</div>
+
+      <!-- Admin nav -->
+      <div class="nav-links" id="navLinks">
+        <!-- Store name display -->
+        <span class="nav-link" style="cursor:default;color:var(--gold-light)">
+          🏪 <span id="adminStoreName">…</span>
+        </span>
+
+        <!-- Admin name -->
+        <span id="navUserName" class="nav-link" style="cursor:default"></span>
+
+        <!-- Logout -->
+        <button class="nav-link logout-link" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+
+      <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+       ADMIN PANEL BODY
+       Two-column: sidebar (left) + content (right)
+       ============================================================ -->
+  <div class="admin-page">
+
+    <!-- ---- SIDEBAR ---- -->
+    <aside class="admin-sidebar">
+      <!-- Store name in sidebar -->
+      <div class="sidebar-store-name" id="sidebarStoreName">Loading…</div>
+
+      <div class="sidebar-section-label">Management</div>
+
+      <!-- Sidebar nav buttons -->
+      <button class="sidebar-item active" id="sidebar-inventory"
+        onclick="goToSection('inventory')">
+        📦 Inventory
+      </button>
+
+      <button class="sidebar-item" id="sidebar-add-saree"
+        onclick="goToSection('add-saree')">
+        ➕ Add Saree
+      </button>
+
+      <button class="sidebar-item" id="sidebar-store-info"
+        onclick="goToSection('store-info')">
+        🏪 Store Info
+      </button>
+
+      <div class="sidebar-section-label">Account</div>
+
+      <button class="sidebar-item danger" onclick="handleLogout()">
+        🚪 Logout
+      </button>
+    </aside>
+
+    <!-- ---- MAIN CONTENT AREA ---- -->
+    <!-- admin.js fills this div based on which section is active -->
+    <main class="admin-main" id="adminContent">
+      <p style="color:var(--text-muted)">Loading…</p>
+    </main>
+
+  </div>
+
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JS Load Order:
+       1. data.js     → SAREES, ADMINS, formatPrice etc.
+       2. auth.js     → getSession, requireAdmin, handleLogout
+       3. admin.js    → renderAdminPanel and all admin functions
+  -->
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+
+  <script>
+    // ✅ PROTECT THIS PAGE — kick out anyone who is not an admin
+    requireAdmin();
+
+    /*
+     * ONE-TIME STALE DATA CLEANUP
+     * ════════════════════════════
+     * Previous versions of this app stored sarees under the key "hsf_sarees"
+     * (without a version suffix). That key used the OLD store names (Nalli Silks,
+     * Pochampally Silks, GRT Silks) which no longer match the ADMINS array.
+     *
+     * If a browser still has that old key, every filter for "Chennai Shopping Mall"
+     * etc. would find zero sarees because the stored data still says "Nalli Silks".
+     *
+     * This cleanup runs once — it removes the old key and the old v1 key.
+     * The new key "hsf_sarees_v2" will then be seeded with correct store names.
+     */
+    (function cleanupStaleStorage() {
+      var oldKeys = ["hsf_sarees", "sf_wishlist", "sf_cart"];
+      oldKeys.forEach(function(k) { localStorage.removeItem(k); });
+    })();
+
+    // Get the current admin's session
+    var session = getSession();
+
+    // Show store name in nav and sidebar
+    document.getElementById("adminStoreName").textContent    = session.store;
+    document.getElementById("sidebarStoreName").textContent  = session.store;
+
+    // Show admin's name in nav
+    populateNavUser();
+
+    // Render the initial admin panel (inventory view)
+    renderAdminPanel();
+  </script>
+
+</body>
+</html>

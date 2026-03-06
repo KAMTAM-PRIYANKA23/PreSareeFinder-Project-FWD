@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    pages/user-dashboard.html — User Home Dashboard
+    =================================================
+    First page a customer sees after login.
+    Shows:
+      - Welcome message with their name
+      - Quick action cards (Browse, Wishlist, Cart)
+      - Featured sarees (latest 4)
+    
+    PROTECTED: requireUser() at top of script redirects
+    anyone who isn't a logged-in customer.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — Hyderabad Saree Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       USER NAVIGATION BAR
+       ============================================================ -->
+  <nav class="user-nav">
+    <div class="nav-inner">
+
+      <!-- Logo -->
+      <a class="nav-logo" href="user-dashboard.html">🪷 Saree Finder</a>
+
+      <!-- Nav links -->
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link active" href="user-dashboard.html">🏠 Home</a>
+        <a class="nav-link" href="sarees.html">✨ Sarees</a>
+        <a class="nav-link" href="wishlist.html">
+          ♡ Wishlist <span class="nav-badge" id="wishlistBadge">0</span>
+        </a>
+        <a class="nav-link" href="cart.html">
+          🛍 Cart <span class="nav-badge" id="cartBadge">0</span>
+        </a>
+        <span id="navUserName" class="nav-link" style="cursor:default"></span>
+        <button class="nav-link logout-link" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Availability Disclaimer -->
+  <div class="disclaimer">
+    ⚠️ <strong>Disclaimer:</strong> Stock availability shown online may not match actual store inventory. Please contact the store before visiting.
+  </div>
+
+
+  <!-- ============================================================
+       WELCOME SECTION
+       ============================================================ -->
+  <section class="dashboard-welcome">
+    <div class="inner">
+      <h2 id="welcomeMsg">Welcome back! 👋</h2>
+      <p>Explore the finest sarees from across Hyderabad</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="container">
+
+    <!-- Quick action cards -->
+    <div class="section-header" style="margin-bottom:16px">
+      <h2>What would you like to do?</h2>
+    </div>
+
+    <div class="quick-actions">
+      <a class="quick-card" href="sarees.html">
+        <div class="qc-icon">🛍</div>
+        <div class="qc-label">Browse Sarees</div>
+        <div class="qc-sub">Explore all 20+ sarees</div>
+      </a>
+      <a class="quick-card" href="wishlist.html">
+        <div class="qc-icon">♡</div>
+        <div class="qc-label">My Wishlist</div>
+        <div class="qc-sub" id="wishlistQuickSub">0 saved items</div>
+      </a>
+      <a class="quick-card" href="cart.html">
+        <div class="qc-icon">🛒</div>
+        <div class="qc-label">My Cart</div>
+        <div class="qc-sub" id="cartQuickSub">0 items</div>
+      </a>
+      <a class="quick-card" href="sarees.html?cat=Wedding">
+        <div class="qc-icon">💍</div>
+        <div class="qc-label">Wedding Sarees</div>
+        <div class="qc-sub">Bridal collection</div>
+      </a>
+      <a class="quick-card" href="sarees.html?cat=Fancy">
+        <div class="qc-icon">✨</div>
+        <div class="qc-label">Fancy Sarees</div>
+        <div class="qc-sub">Party wear</div>
+      </a>
+      <a class="quick-card" href="sarees.html?price=0-2000">
+        <div class="qc-icon">💰</div>
+        <div class="qc-label">Under ₹2,000</div>
+        <div class="qc-sub">Budget picks</div>
+      </a>
+    </div>
+
+    <!-- Featured Sarees (shows 4 random/first) -->
+    <div class="section-header">
+      <h2>Featured Sarees</h2>
+      <span><a href="sarees.html" style="color:var(--gold);font-weight:700">View all →</a></span>
+    </div>
+
+    <div class="saree-grid" id="featuredGrid"></div>
+
+  </main>
+
+
+  <!-- ============================================================
+       SAREE PREVIEW MODAL (shared across user pages)
+       ============================================================ -->
+  <div id="sareeModal" class="modal-backdrop" style="display:none" onclick="closeSareeModal(event)">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="document.getElementById('sareeModal').style.display='none'; document.body.style.overflow=''">✕</button>
+      <img id="modalImg" class="modal-img" src="" alt="">
+      <div class="modal-body">
+        <span id="modalCategory" class="cat-badge" style="position:static;display:inline-block;margin-bottom:10px"></span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta">
+          <div class="modal-meta-item"><strong>Store</strong><span id="modalStore"></span></div>
+          <div class="modal-meta-item"><strong>Location</strong><span id="modalLocation"></span></div>
+          <div class="modal-meta-item"><strong>Availability</strong><span id="modalStatus"></span></div>
+        </div>
+        <p id="modalDesc" style="color:var(--text-muted);font-size:0.9rem;line-height:1.6;margin-bottom:12px"></p>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-actions">
+          <button class="btn-outline" id="modalWishBtn"></button>
+          <button class="btn-primary" id="modalCartBtn"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer>
+    <p>🪷 <strong>Hyderabad Saree Finder</strong> — Celebrating Indian weaves</p>
+    <p><a href="../login.html">Login</a> &nbsp;|&nbsp; <a href="../signup.html">Sign Up</a></p>
+  </footer>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JS: data first, then auth (requireUser), then user logic -->
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/user.js"></script>
+  <script>
+    // ✅ PROTECT THIS PAGE — kick out non-users
+    requireUser();
+
+    // Get current session
+    var session = getSession();
+
+    // Show personalised welcome message
+    document.getElementById("welcomeMsg").textContent =
+      "Welcome back, " + session.name.split(" ")[0] + "! 👋";
+
+    // Populate nav user name
+    populateNavUser();
+
+    // Update badges
+    updateBadgeCounts();
+
+    // Update quick card subtitles
+    document.getElementById("wishlistQuickSub").textContent =
+      getWishlist().length + " saved item" + (getWishlist().length !== 1 ? "s" : "");
+    document.getElementById("cartQuickSub").textContent =
+      getCart().length + " item" + (getCart().length !== 1 ? "s" : "");
+
+    // Show 4 featured sarees (with discounts first)
+    var featured = SAREES
+      .slice()
+      .sort(function(a, b) { return b.discount - a.discount; })
+      .slice(0, 4);
+
+    // Temporarily override SAREES for rendering just these 4
+    var allSarees = SAREES;
+    SAREES = featured;
+    renderSareeGrid("featuredGrid", null, "", "All", "all");
+    SAREES = allSarees;
+  </script>
+
+</body>
+</html>
